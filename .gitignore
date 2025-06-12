@@ -1,0 +1,43 @@
+# CMake build directories
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# ide specific files
+.vscode/
+
+# Compiled object files, libraries, executables
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.exe
+*.out
+
+# Editor and OS files
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# CLion/JetBrains IDE files
+.idea/
+*.iml
+
+# Test output
+Testing/
+CTestTestfile.cmake
+
+# Coverage and profiling
+*.gcda
+*.gcno
+*.gcov
+
+# Logs
+*.log
