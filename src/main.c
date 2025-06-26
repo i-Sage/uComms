@@ -24,6 +24,11 @@
 #include "checks.h"
 
 
+#define START_BYTE 0x02  // STX
+#define STOP_BYTE  0x03  // EXT
+#define ESC_BYTE   0x10  // ESC
+
+
 int main() {
     /// Before we can mess around with a serial port, we first have to open it
     const char* port = "/dev/ttyACM0";
@@ -71,12 +76,29 @@ int main() {
     
 
     /// for now lets just keep sending a true value, we will use this to toggle the on board led of the uno.
+
     for (;;) {
-        write(serial_port, "1", 1);
-        printf("TOGGLE ON-BOARD LED...\n");
+        // write(serial_port, "1", 1);
+        // printf("TOGGLE ON-BOARD LED...\n");
+        // sleep(2);
+        // write(serial_port, "0", 1);
+        // printf("TOGGLE ON-BOARD LED...\n");
+        // sleep(2);
+        char msg[] = {START_BYTE, 2, 'O', 'N', STOP_BYTE};
+        char msg1[] = {START_BYTE, 3, 'O', 'F', 'F', STOP_BYTE};
+
+        write(serial_port, msg, sizeof(msg));
         sleep(1);
-        write(serial_port, "0", 1);
-        printf("TOGGLE ON-BOARD LED...\n");
-        sleep(1);
+
+        // char read_buf[64];
+        // memset(read_buf, 0, sizeof(read_buf));
+
+        // int num_bytes = read(serial_port, read_buf, sizeof(read_buf));
+        // if (num_bytes > 0) {
+        //     printf("Received (%d bytes): ", num_bytes);
+        //     for (int i = 0; i < num_bytes; i++) {
+        //         printf("%c", read_buf[i]);
+        //     }
+        //     printf("\n");
+        // }
     }
-}
