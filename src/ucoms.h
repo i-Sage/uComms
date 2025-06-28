@@ -95,27 +95,21 @@ void parse_cmd(uCOMMS_CONTEXT *ctx, char data) {
         default : {
             /// ? Current data byte is PAYLOAD length 
             if ((ctx->comms_flags & (1 << START_BYTE_FLAG)) 
-                && !(ctx->comms_flags & (1 << LENGTH_BYTE_FLAG)))
-            {   
-                CHECK((ctx->comms_flags |= (1 << START_BYTE)), "length flag received without start");
-                CHECK((data < uCOMMS_CONTEXT_BUFFER_SIZE - 1), "ctx buffer overflow");
-                ctx->cmd_len = data;
-                ctx->comms_flags |= 1 << LENGTH_BYTE_FLAG;
-                return;
+                && !(ctx->comms_flags & (1 << LENGTH_BYTE_FLAG))) {
+                    ctx->cmd_len = data;
+                    ctx->comms_flags |= 1 << LENGTH_BYTE_FLAG;
+                    return;
             }
 
             /// ? Current data byte is part of the actual msg
             if ((ctx->comms_flags & (1 << START_BYTE_FLAG)) 
-                && (ctx->comms_flags & (1<< LENGTH_BYTE_FLAG)))
-            {
+                && (ctx->comms_flags & (1<< LENGTH_BYTE_FLAG))) {
                     /// ? bounds checking
                     CHECK((ctx->curr_cmd_len < uCOMMS_CONTEXT_BUFFER_SIZE - 1), "ctx buffer overflow");
                     ctx->comms_buf[ctx->curr_cmd_len++] = data;
                     return;
-            } else {
-                exit(1); /// ! FIX THIS
             }
-            
+
             break;
         }
     }

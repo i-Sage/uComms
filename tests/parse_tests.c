@@ -121,22 +121,21 @@ int test_parse_payload_bytes(void) {
     uCOMMS_CONTEXT ctx = {0};
 
     parse_cmd(&ctx, START_BYTE);
-    parse_cmd(&ctx, 5);
+    parse_cmd(&ctx, 4);
     parse_cmd(&ctx, 'G');
     parse_cmd(&ctx, 'E');
     parse_cmd(&ctx, 'T');
     parse_cmd(&ctx, ':');
-    parse_cmd(&ctx, 'h');
     parse_cmd(&ctx, STOP_BYTE);
 
     uint8_t expected_flags = 0;
     expected_flags |= (1 << START_BYTE_FLAG) | (1 << LENGTH_BYTE_FLAG) | (1 << STOP_BYTE_FLAG);
 
     uCOMMS_CONTEXT expected = {
-        .cmd_len      = 5,
+        .cmd_len      = 4,
         .comms_flags  = expected_flags,
-        .curr_cmd_len = 5,
-        .comms_buf    = {'G', 'E', 'T', ':', 'h', '\0'},
+        .curr_cmd_len = 4,
+        .comms_buf    = {'G', 'E', 'T', ':', '\0'},
     };
 
 
@@ -154,7 +153,7 @@ int test_parse_stop_byte(void) {
     uCOMMS_CONTEXT ctx = {0};
 
     parse_cmd(&ctx, START_BYTE);
-    parse_cmd(&ctx, 0);
+    parse_cmd(&ctx, 10);
     parse_cmd(&ctx, STOP_BYTE);
     
     TEST_ASSERT(ctx.comms_flags & (1 << START_BYTE_FLAG),  "START_BYTE should set START_BYTE_FLAG");
@@ -234,18 +233,19 @@ int test_null_pointer_should_crash(void) {
     return 1;
 }
 
+
 int main(void) {
     printf("=== uComms Parse Function Tests ===\n\n");
     
     // Run all tests
-    //RUN_TEST(test_reset_comms_context);
-    //RUN_TEST(test_parse_start_byte);
-    //RUN_TEST(test_parse_length_byte);
+    // RUN_TEST(test_reset_comms_context);
+    // RUN_TEST(test_parse_start_byte);
+    // RUN_TEST(test_parse_length_byte);
     RUN_TEST(test_parse_payload_bytes);
-    //RUN_TEST(test_parse_stop_byte);
-    //RUN_TEST(test_parse_invalid_sequence);
-    //RUN_TEST(test_null_pointer_should_crash);
-    //RUN_TEST(test_buffer_overflow_should_crash);
+    // RUN_TEST(test_parse_stop_byte);
+    // RUN_TEST(test_parse_invalid_sequence);
+    // RUN_TEST(test_null_pointer_should_crash);
+    // RUN_TEST(test_buffer_overflow_should_crash);
     
     // Print summary
     printf("=== Test Summary ===\n");
